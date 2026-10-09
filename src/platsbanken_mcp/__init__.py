@@ -1,0 +1,1 @@
+"""Platsbanken MCP server."""

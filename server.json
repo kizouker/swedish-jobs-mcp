@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.kizouker/platsbanken-mcp",
+  "description": "Search all current Swedish job ads (Platsbanken) via Arbetsförmedlingen's open JobTech API",
+  "repository": {
+    "url": "https://github.com/kizouker/platsbanken-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "platsbanken-mcp",
+      "version": "0.1.0",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "JOBTECH_API_KEY",
+          "description": "Free API key from https://apirequest.jobtechdev.se/",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
