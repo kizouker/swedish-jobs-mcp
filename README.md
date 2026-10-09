@@ -62,6 +62,16 @@ contain contact people's names and emails; don't store them longer than you need
 Job ads come from Arbetsförmedlingen / JobTech. Their terms of use apply to
 the data; this repository's MIT license covers only the code.
 
+## Development
+
+```sh
+uv run --extra dev pytest          # offline tests (API is faked)
+uv run --extra dev pytest -m live  # live tests against the real JobTech API
+```
+
+GitHub Actions runs both on every push and every Monday, so a change in the
+JobTech API shows up as a failed run.
+
 ## License
 
 MIT
