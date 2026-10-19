@@ -17,6 +17,22 @@ mcp-name: io.github.kizouker/platsbanken-mcp
 | `suggest_search_terms` | Autocomplete ("utve" → "utvecklare") |
 | `changes_since` | Ads added/removed in all of Sweden in the last N hours |
 
+## How it works
+
+The MCP client starts the server as a local process and talks to it over stdio. The server then calls Arbetsförmedlingen's JobTech APIs over HTTPS. No port is opened on your machine.
+
+```mermaid
+flowchart LR
+    User([User]) --> Client["MCP client<br/>(Claude Code, Claude Desktop, Codex)"]
+
+    subgraph Local machine
+        Client <-->|"stdio: JSON-RPC over stdin/stdout"| Server["platsbanken-mcp process<br/>(started by uvx)"]
+    end
+
+    Server -->|"HTTPS: /search, /ad/{id}, /complete"| JobSearch["JobSearch API<br/>jobsearch.api.jobtechdev.se"]
+    Server -->|"HTTPS: /stream"| JobStream["JobStream API<br/>jobstream.api.jobtechdev.se"]
+```
+
 ## Install
 
 Needs [uv](https://docs.astral.sh/uv/).
@@ -29,7 +45,7 @@ Needs [uv](https://docs.astral.sh/uv/).
     "platsbanken": {
       "command": "uvx",
       "args": ["platsbanken-mcp"],
-      "env": { "JOBTECH_API_KEY": "your-key-here" }
+
     }
   }
 }
@@ -45,11 +61,26 @@ command = "uvx"
 args = ["platsbanken-mcp"]
 ```
 
-## API key
 
-The JobTech API asks users to register a free key at
-https://apirequest.jobtechdev.se/ and send it as `JOBTECH_API_KEY`.
-Use your own key — this server never ships one.
+## Paging
+
+`search_jobs` and `changes_since` return at most 25 ads per call, so one answer
+never floods the AI's context. Each result has a `next_offset`: call the tool
+again with `offset=next_offset` to get the next page. When `next_offset` is
+`null`, there are no more ads.
+
+## Configuration
+
+Everything is optional. Set these as environment variables (in the `env` block
+of your MCP client config) to change the defaults:
+
+| Variable | Default | What it does |
+|---|---|---|
+| `PLATSBANKEN_MAX_PAGE_SIZE` | `25` | Most ads returned per call |
+| `PLATSBANKEN_DEFAULT_PAGE_SIZE` | `25` | Ads returned when no `limit` is given |
+| `PLATSBANKEN_TIMEOUT` | `30` | Seconds to wait for JobSearch |
+| `PLATSBANKEN_STREAM_TIMEOUT` | `120` | Seconds to wait for JobStream |
+| `JOBTECH_SEARCH_URL` / `JOBTECH_STREAM_URL` | JobTech's public URLs | Point at another host, e.g. a test server |
 
 ## Fair use
 
@@ -65,12 +96,61 @@ the data; this repository's MIT license covers only the code.
 ## Development
 
 ```sh
-uv run --extra dev pytest          # offline tests (API is faked)
+uv run --extra dev pytest          # offline tests: unit tests + end-to-end over MCP (API is faked)
 uv run --extra dev pytest -m live  # live tests against the real JobTech API
 ```
 
+The end-to-end tests (`tests/test_e2e.py`) start the server as a real process
+and call its tools over MCP, against a small fake JobTech server on localhost.
+
 GitHub Actions runs both on every push and every Monday, so a change in the
 JobTech API shows up as a failed run.
+
+### Try it locally with MCP Inspector
+
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) is a web page where you can call the tools yourself. Needs Node.js.
+
+```sh
+npx @modelcontextprotocol/inspector uv run platsbanken-mcp
+```
+
+Open the address printed in the terminal, click **Connect**, then **Tools** → **List Tools**.
+
+### Debug in VS Code
+
+Start the server through Inspector with [debugpy](https://github.com/microsoft/debugpy) listening on port 5678:
+
+```sh
+npx @modelcontextprotocol/inspector uv run --with debugpy python -X frozen_modules=off -m debugpy --listen 127.0.0.1:5678 -m platsbanken_mcp.server
+```
+
+`.vscode/launch.json` already has an attach configuration:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to MCP server",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": { "host": "127.0.0.1", "port": 5678 },
+      "justMyCode": false
+    }
+  ]
+}
+```
+
+1. Set a breakpoint in `src/platsbanken_mcp/server.py`.
+2. In Inspector, click **Connect**.
+3. In VS Code, open **Run and Debug**, pick **Attach to MCP server** and press play.
+4. In Inspector, run a tool (for example `search_jobs`). VS Code stops at the breakpoint.
+
+Tips:
+
+- Don't use `print()` in the server. It writes to stdout, which is the MCP channel, and breaks the connection. Use `logging` or write to stderr.
+- `Address already in use` means an old process still holds port 5678. Find it with `lsof -i :5678` and stop it with `kill <PID>`.
+- `-X frozen_modules=off` stops the debugger from missing breakpoints.
 
 ## License
 

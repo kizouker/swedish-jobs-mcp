@@ -30,3 +30,11 @@ async def test_live_get_job_has_description():
 async def test_live_autocomplete():
     terms = await suggest_search_terms("utve")
     assert any(t.startswith("utve") for t in terms)
+
+
+async def test_live_paging_gives_different_ads_on_each_page():
+    first = await search_jobs(query="utvecklare", limit=3, offset=0)
+    assert first["next_offset"] == 3  # there are far more than 3 developer ads
+    second = await search_jobs(query="utvecklare", limit=3, offset=first["next_offset"])
+    first_ids = {a["id"] for a in first["ads"]}
+    assert first_ids.isdisjoint(a["id"] for a in second["ads"])

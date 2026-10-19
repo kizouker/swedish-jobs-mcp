@@ -13,14 +13,7 @@
       "identifier": "platsbanken-mcp",
       "version": "0.1.0",
       "transport": { "type": "stdio" },
-      "environmentVariables": [
-        {
-          "name": "JOBTECH_API_KEY",
-          "description": "Free API key from https://apirequest.jobtechdev.se/",
-          "isRequired": false,
-          "isSecret": true
-        }
-      ]
+       
     }
   ]
 }
