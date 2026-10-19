@@ -1,3 +1,5 @@
+[![CI](https://github.com/kizouker/platsbanken-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/kizouker/platsbanken-mcp/actions/workflows/ci.yml) 
+
 # platsbanken-mcp
 
 An MCP server that lets AI assistants (Claude, Codex, Cursor, …) search all
