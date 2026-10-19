@@ -1,5 +1,5 @@
 """
-platsbanken_mcp — an MCP server for Swedish job ads (Platsbanken).
+swedish_jobs_mcp — an MCP server for Swedish job ads (Platsbanken).
 
 Data comes from Arbetsförmedlingen's open JobTech APIs:
   - JobSearch  https://jobsearch.api.jobtechdev.se  (search + single ad)
@@ -7,7 +7,7 @@ Data comes from Arbetsförmedlingen's open JobTech APIs:
 
 Settings (page sizes, timeouts, URLs) live in config.py.
 
-Run:  uvx platsbanken-mcp
+Run:  uvx swedish-jobs-mcp
 """
 
 from datetime import datetime, timedelta
@@ -42,7 +42,7 @@ OffsetParam = Annotated[
     Field(description="Ads to skip. Use next_offset from the previous result."),
 ]
 
-mcp = FastMCP("platsbanken")
+mcp = FastMCP("swedish-jobs")
 
 HEADERS = {"accept": "application/json"}
 

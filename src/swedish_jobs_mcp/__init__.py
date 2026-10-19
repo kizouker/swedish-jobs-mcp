@@ -1,0 +1,1 @@
+"""Swedish Jobs MCP server."""

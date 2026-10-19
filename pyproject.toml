@@ -1,5 +1,5 @@
 [project]
-name = "platsbanken-mcp"
+name = "swedish-jobs-mcp"
 version = "0.1.0"
 description = "MCP server for Swedish job ads (Platsbanken) via Arbetsförmedlingen's open JobTech API"
 readme = "README.md"
@@ -32,7 +32,7 @@ target-version = "py310"
 select = ["E", "F", "I", "UP", "B"]
 
 [project.scripts]
-platsbanken-mcp = "platsbanken_mcp.server:main"
+swedish-jobs-mcp = "swedish_jobs_mcp.server:main"
 
 [project.urls]
 Repository = "https://github.com/kizouker/platsbanken-mcp"

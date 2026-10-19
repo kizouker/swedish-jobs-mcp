@@ -6,7 +6,7 @@ They check that the API still answers in the shape the server expects.
 
 import pytest
 
-from platsbanken_mcp.server import get_job, search_jobs, suggest_search_terms
+from swedish_jobs_mcp.server import get_job, search_jobs, suggest_search_terms
 
 pytestmark = pytest.mark.live
 

@@ -104,7 +104,7 @@ async def connected_client(api_url: str, **extra_env: str):
         **extra_env,
     }
     params = StdioServerParameters(
-        command=sys.executable, args=["-m", "platsbanken_mcp.server"], env=env
+        command=sys.executable, args=["-m", "swedish_jobs_mcp.server"], env=env
     )
     async with stdio_client(params) as (read, write):
         async with ClientSession(read, write) as session:
@@ -158,7 +158,7 @@ async def test_limit_above_the_cap_is_cut_down(fake_api):
 
 
 async def test_cap_can_be_changed_with_an_environment_variable(fake_api):
-    async with connected_client(fake_api, PLATSBANKEN_MAX_PAGE_SIZE="10") as session:
+    async with connected_client(fake_api, SWEDISH_JOBS_MAX_PAGE_SIZE="10") as session:
         result = _json(await session.call_tool("search_jobs", {"limit": 100}))
         schema = (await session.list_tools()).tools
     assert result["returned"] == 10

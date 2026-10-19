@@ -6,15 +6,15 @@ import httpx
 import pytest
 import respx
 
-from platsbanken_mcp import server
-from platsbanken_mcp.config import (
+from swedish_jobs_mcp import server
+from swedish_jobs_mcp.config import (
     DEFAULT_PAGE_SIZE,
     MAX_PAGE_SIZE,
     SEARCH_URL,
     STREAM_URL,
     _int_env,
 )
-from platsbanken_mcp.server import (
+from swedish_jobs_mcp.server import (
     changes_since,
     clamp_limit,
     get_job,
