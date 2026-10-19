@@ -140,9 +140,7 @@ async def test_search_over_mcp_and_follow_next_offset(fake_api):
         offset = first["next_offset"]
         while offset is not None:
             page = _json(
-                await session.call_tool(
-                    "search_jobs", {"query": "utvecklare", "offset": offset}
-                )
+                await session.call_tool("search_jobs", {"query": "utvecklare", "offset": offset})
             )
             seen += [a["id"] for a in page["ads"]]
             offset = page["next_offset"]
@@ -164,9 +162,9 @@ async def test_cap_can_be_changed_with_an_environment_variable(fake_api):
         result = _json(await session.call_tool("search_jobs", {"limit": 100}))
         schema = (await session.list_tools()).tools
     assert result["returned"] == 10
-    limit_help = next(t for t in schema if t.name == "search_jobs").inputSchema[
-        "properties"
-    ]["limit"]["description"]
+    limit_help = next(t for t in schema if t.name == "search_jobs").inputSchema["properties"][
+        "limit"
+    ]["description"]
     assert "1-10" in limit_help  # the AI is told the new cap too
 
 
@@ -191,7 +189,6 @@ async def test_get_job_suggest_and_changes(fake_api):
         assert changes["removed_count"] == 1
         assert changes["returned"] == 2
         assert changes["next_offset"] == 2
-
 
 
 async def test_api_error_gives_a_tool_error_and_the_server_keeps_running(fake_api):

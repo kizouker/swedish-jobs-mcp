@@ -233,7 +233,11 @@ def test_schema_tells_the_ai_the_real_page_limit():
 def test_schema_lists_valid_sort_orders():
     sort = _tools_by_name()["search_jobs"].inputSchema["properties"]["sort"]
     assert set(sort["enum"]) == {
-        "relevance", "pubdate-desc", "pubdate-asc", "applydate-desc", "applydate-asc",
+        "relevance",
+        "pubdate-desc",
+        "pubdate-asc",
+        "applydate-desc",
+        "applydate-asc",
     }
 
 

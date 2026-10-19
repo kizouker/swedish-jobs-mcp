@@ -103,8 +103,10 @@ uv run --extra dev pytest -m live  # live tests against the real JobTech API
 The end-to-end tests (`tests/test_e2e.py`) start the server as a real process
 and call its tools over MCP, against a small fake JobTech server on localhost.
 
-GitHub Actions runs both on every push and every Monday, so a change in the
-JobTech API shows up as a failed run.
+GitHub Actions runs the lint and the offline tests (Python 3.10-3.13) on every
+push and pull request. The live tests run every Monday and can be started by hand
+(Actions tab -> CI -> Run workflow), so a change in the JobTech API shows up as a
+failed run without blocking pull requests.
 
 ### Try it locally with MCP Inspector
 

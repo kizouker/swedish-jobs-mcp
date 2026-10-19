@@ -14,7 +14,7 @@ dependencies = [
 keywords = ["mcp", "jobs", "sweden", "platsbanken", "arbetsformedlingen", "jobtech"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-asyncio>=0.23", "respx>=0.21"]
+dev = ["pytest>=8", "pytest-asyncio>=0.23", "respx>=0.21", "ruff>=0.8"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -23,6 +23,13 @@ markers = [
     "e2e: starts the server as a real process and talks MCP to it (offline)",
 ]
 addopts = "-m 'not live'"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
 
 [project.scripts]
 platsbanken-mcp = "platsbanken_mcp.server:main"

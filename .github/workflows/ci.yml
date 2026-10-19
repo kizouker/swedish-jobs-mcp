@@ -8,20 +8,43 @@ on:
   schedule:
     - cron: "17 6 * * 1" # Mondays: notice if the JobTech API changes
 
+# The workflows only read the code; they need no other rights.
+permissions:
+  contents: read
+
+# A new push cancels the older run of the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv run --extra dev ruff check src tests
+      - run: uv run --extra dev ruff format --check src tests
+
   test:
     name: Tests (Python ${{ matrix.python }})
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python: ["3.10", "3.13"]
+        python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
+      # Unit tests and end-to-end tests. The JobTech API is faked, so no internet needed.
       - run: uv run --python ${{ matrix.python }} --extra dev pytest -v
 
+  # Calls the real JobTech API. Only on the weekly schedule and by hand, so a
+  # hiccup on their side never blocks a pull request.
   live:
     name: Live test against JobTech API
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,3 +58,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - run: uv build
+      - run: uvx twine check dist/*

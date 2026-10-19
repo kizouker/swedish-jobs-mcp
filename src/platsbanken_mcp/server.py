@@ -26,9 +26,7 @@ from .config import (
     STREAM_URL,
 )
 
-SortOrder = Literal[
-    "relevance", "pubdate-desc", "pubdate-asc", "applydate-desc", "applydate-asc"
-]
+SortOrder = Literal["relevance", "pubdate-desc", "pubdate-asc", "applydate-desc", "applydate-asc"]
 
 # These two are shown to the AI in the tool schema, so they are built from the
 # settings instead of being typed out by hand.
@@ -62,9 +60,7 @@ def next_offset(offset: int, returned: int, total: int | None) -> int | None:
     return following
 
 
-async def _get_json(
-    base_url: str, path: str, *, params: dict | None = None, timeout: float
-) -> Any:
+async def _get_json(base_url: str, path: str, *, params: dict | None = None, timeout: float) -> Any:
     """GET one JSON document from a JobTech API."""
     async with httpx.AsyncClient(timeout=timeout) as client:
         r = await client.get(f"{base_url}{path}", params=params, headers=HEADERS)
@@ -153,9 +149,7 @@ async def get_job(ad_id: str) -> dict:
 @mcp.tool()
 async def suggest_search_terms(text: str) -> list[str]:
     """Autocomplete a search word (e.g. "utve" -> "utvecklare", ...)."""
-    data = await _get_json(
-        SEARCH_URL, "/complete", params={"q": text}, timeout=SEARCH_TIMEOUT
-    )
+    data = await _get_json(SEARCH_URL, "/complete", params={"q": text}, timeout=SEARCH_TIMEOUT)
     return [t.get("value") for t in data.get("typeahead", [])]
 
 
