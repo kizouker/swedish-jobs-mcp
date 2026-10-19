@@ -1,6 +1,6 @@
 [project]
 name = "swedish-jobs-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "MCP server for Swedish job ads (Platsbanken) via Arbetsförmedlingen's open JobTech API"
 readme = "README.md"
 license = "MIT"

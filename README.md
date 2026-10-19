@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 # swedish-jobs-mcp
-=======
-[![CI](https://github.com/kizouker/platsbanken-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/kizouker/platsbanken-mcp/actions/workflows/ci.yml) 
 
-# platsbanken-mcp
->>>>>>> 18f0de063485db547c2696db49a4ac76c6a3d6b5
+[![CI](https://github.com/kizouker/swedish-jobs-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/kizouker/swedish-jobs-mcp/actions/workflows/ci.yml)
 
 An MCP server that lets AI assistants (Claude, Codex, Cursor, …) search all
 current job ads in Sweden — the ads in Arbetsförmedlingen's Platsbanken.
