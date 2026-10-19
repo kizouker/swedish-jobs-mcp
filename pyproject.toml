@@ -37,7 +37,7 @@ select = ["E", "F", "I", "UP", "B"]
 swedish-jobs-mcp = "swedish_jobs_mcp.server:main"
 
 [project.urls]
-Repository = "https://github.com/kizouker/platsbanken-mcp"
+Repository = "https://github.com/kizouker/swedish-jobs-mcp"
 
 [build-system]
 requires = ["hatchling"]

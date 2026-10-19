@@ -3,7 +3,7 @@
   "name": "io.github.kizouker/swedish-jobs-mcp",
   "description": "Search all current Swedish job ads (Platsbanken) via Arbetsförmedlingen's open JobTech API",
   "repository": {
-    "url": "https://github.com/kizouker/platsbanken-mcp",
+    "url": "https://github.com/kizouker/swedish-jobs-mcp",
     "source": "github"
   },
   "version": "0.1.0",
