@@ -1186,6 +1186,8 @@ dependencies = [
     { name = "debugpy" },
     { name = "httpx" },
     { name = "mcp", extra = ["cli"] },
+    { name = "pytest" },
+    { name = "respx" },
 ]
 
 [package.optional-dependencies]
@@ -1201,8 +1203,10 @@ requires-dist = [
     { name = "debugpy", specifier = ">=1.8.22" },
     { name = "httpx", specifier = ">=0.27" },
     { name = "mcp", extras = ["cli"], specifier = ">=1.2,<2" },
+    { name = "pytest", specifier = ">=9.1.1" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23" },
+    { name = "respx", specifier = ">=0.23.1" },
     { name = "respx", marker = "extra == 'dev'", specifier = ">=0.21" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8" },
 ]
