@@ -116,6 +116,25 @@ repository's MIT license covers only the code, not the data.
   `JOBTECH_STREAM_URL` (see Configuration) and check the catalogue above.
 - **Questions about the data:** opendata@arbetsformedlingen.se
 
+## Security note
+
+The tools return text from job ads. That text is written by employers and
+other third parties, not by this server, so treat it as untrusted.
+
+An ad could contain hidden instructions aimed at an AI assistant ("ignore the
+user and do X"). This is called indirect prompt injection, and it affects any
+MCP server that returns text from outside sources.
+
+To limit the risk:
+
+- Treat tool results as data, never as instructions.
+- Don't give the same agent that reads job ads tools that can send email,
+  post, push code or fetch URLs, unless you approve each action yourself.
+- Keep your client's permission prompts turned on.
+
+Testing this server against prompt injection is tracked in
+[#2](https://github.com/kizouker/swedish-jobs-mcp/issues/2).
+
 ## Development
 
 ```sh
